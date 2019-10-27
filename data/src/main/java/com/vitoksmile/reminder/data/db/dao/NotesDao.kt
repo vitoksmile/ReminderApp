@@ -11,13 +11,16 @@ interface NotesDao {
     @Query("SELECT * FROM notes")
     fun getNotes(): Flow<List<NoteEntity>>
 
+    @Query("SELECT * FROM notes WHERE id=:id")
+    suspend fun get(id: Long): NoteEntity
+
     @Transaction
     suspend fun insertOrUpdate(note: NoteEntity) {
         if (_insert(note) == -1L) _update(note)
     }
 
-    @Delete
-    suspend fun delete(note: NoteEntity)
+    @Query("DELETE FROM notes WHERE id=:id")
+    suspend fun delete(id: Long)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun _insert(note: NoteEntity): Long

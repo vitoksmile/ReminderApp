@@ -34,6 +34,10 @@ class NotesAdapter : RecyclerView.Adapter<NotesAdapter.ViewHolder>() {
         private val tvBody = view.tvBody
         private val tvDate = view.tvDate
 
-        fun bind(note: Note) {}
+        fun bind(note: Note) = with(note) {
+            tvTitle.text = title
+            tvBody.text = body
+            tvDate.text = date.toString() // TODO: add formatter
+        }
     }
 }

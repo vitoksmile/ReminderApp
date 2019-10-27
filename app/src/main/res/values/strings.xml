@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ReminderApp</string>
+
+    <string name="empty_notes">There are no notes yet,\npress \'+\' to add new one</string>
 </resources>

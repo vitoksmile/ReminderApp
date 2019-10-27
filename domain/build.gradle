@@ -34,6 +34,8 @@ dependencies {
 
     implementation project(':data')
 
+    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
+
     def work_version = "2.3.0-alpha03"
     implementation "androidx.work:work-runtime-ktx:$work_version"
     implementation "androidx.work:work-gcm:$work_version"

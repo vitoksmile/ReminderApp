@@ -10,7 +10,7 @@ interface NotesRepository {
 
     suspend fun add(title: String, body: String, date: Date)
 
-    suspend fun update(note: NoteEntity, title: String, body: String, date: Date)
+    suspend fun update(id: Long, title: String, body: String, date: Date)
 
-    suspend fun delete(note: NoteEntity)
+    suspend fun delete(id: Long)
 }

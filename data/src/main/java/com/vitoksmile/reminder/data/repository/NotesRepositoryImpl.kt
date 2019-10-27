@@ -18,12 +18,12 @@ class NotesRepositoryImpl(
         dao.insertOrUpdate(entity)
     }
 
-    override suspend fun update(note: NoteEntity, title: String, body: String, date: Date) {
-        val entity = note.copy(title = title, body = body, date = date)
+    override suspend fun update(id: Long, title: String, body: String, date: Date) {
+        val entity = dao.get(id).copy(title = title, body = body, date = date)
         dao.insertOrUpdate(entity)
     }
 
-    override suspend fun delete(note: NoteEntity) {
-        dao.delete(note)
+    override suspend fun delete(id: Long) {
+        dao.delete(id)
     }
 }
