@@ -7,9 +7,11 @@ interface NotesUseCase {
 
     fun getNotes(): LiveData<List<Note>>
 
+    suspend fun getNote(id: Long): Note
+
     suspend fun add(title: String, body: String)
 
-    suspend fun update(note: Note, title: String, body: String)
+    suspend fun update(id: Long, title: String, body: String)
 
     suspend fun delete(note: Note)
 }

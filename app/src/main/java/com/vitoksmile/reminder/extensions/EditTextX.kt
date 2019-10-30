@@ -2,5 +2,8 @@ package com.vitoksmile.reminder.extensions
 
 import android.widget.EditText
 
-val EditText.inputtedText: String
+var EditText.inputtedText: String
+    set(value) {
+        setText(value)
+    }
     get() = text?.toString() ?: ""

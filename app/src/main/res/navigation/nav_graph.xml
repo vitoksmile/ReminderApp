@@ -19,6 +19,10 @@
         android:id="@+id/noteManageFragment"
         android:name="com.vitoksmile.reminder.note.NoteManageFragment"
         android:label="NoteManageFragment"
-        tools:layout="@layout/fragment_note_manage" />
+        tools:layout="@layout/fragment_note_manage">
+        <argument
+            android:name="action"
+            app:argType="com.vitoksmile.reminder.note.Action" />
+    </fragment>
 
 </navigation>

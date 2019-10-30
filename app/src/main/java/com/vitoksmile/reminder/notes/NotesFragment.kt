@@ -11,6 +11,8 @@ import com.vitoksmile.reminder.data.db.AppDatabase
 import com.vitoksmile.reminder.data.repository.NotesRepositoryImpl
 import com.vitoksmile.reminder.domain.models.Note
 import com.vitoksmile.reminder.domain.usecases.NotesUseCaseImpl
+import com.vitoksmile.reminder.note.Action
+import com.vitoksmile.reminder.notes.NotesFragmentDirections.Companion.actionAddNote
 import kotlinx.android.synthetic.main.fragment_notes.*
 
 class NotesFragment : Fragment(R.layout.fragment_notes) {
@@ -24,7 +26,7 @@ class NotesFragment : Fragment(R.layout.fragment_notes) {
         NotesViewModel(useCase)
     }
 
-    private val adapter by lazy { NotesAdapter(::onNoteClicked) }
+    private val adapter by lazy { NotesAdapter(::updateNote) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -47,8 +49,10 @@ class NotesFragment : Fragment(R.layout.fragment_notes) {
     }
 
     private fun addNote() {
-        findNavController().navigate(NotesFragmentDirections.actionAddNote())
+        findNavController().navigate(actionAddNote(Action.NewNote))
     }
 
-    private fun onNoteClicked(note: Note) {}
+    private fun updateNote(note: Note) {
+        findNavController().navigate(actionAddNote(Action.UpdateNote(note.id)))
+    }
 }

@@ -8,6 +8,8 @@ interface NotesRepository {
 
     fun getNotes(): Flow<List<NoteEntity>>
 
+    suspend fun getNote(id: Long): NoteEntity
+
     suspend fun add(title: String, body: String, date: Date)
 
     suspend fun update(id: Long, title: String, body: String, date: Date)

@@ -13,6 +13,10 @@ class NotesRepositoryImpl(
         return dao.getNotes()
     }
 
+    override suspend fun getNote(id: Long): NoteEntity {
+        return dao.get(id)
+    }
+
     override suspend fun add(title: String, body: String, date: Date) {
         val entity = NoteEntity(title = title, body = body, date = date)
         dao.insertOrUpdate(entity)
