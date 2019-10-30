@@ -35,3 +35,5 @@ class FlowLiveData<T>(
         if (!hasActiveObservers()) job.cancelChildren()
     }
 }
+
+fun <T> Flow<T>.asLiveData(): LiveData<T> = FlowLiveData(this)

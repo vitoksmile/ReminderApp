@@ -2,4 +2,10 @@
     <string name="app_name">ReminderApp</string>
 
     <string name="empty_notes">There are no notes yet,\npress \'+\' to add new one</string>
+    <string name="add_note_title">Adding new note</string>
+    <string name="update_note_title">Updating note</string>
+    <string name="enter_title">Enter title (not required)</string>
+    <string name="enter_body">Enter body</string>
+    <string name="add_note">Add note</string>
+    <string name="update_note">Update note</string>
 </resources>

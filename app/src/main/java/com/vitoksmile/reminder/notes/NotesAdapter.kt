@@ -8,7 +8,9 @@ import com.vitoksmile.reminder.R
 import com.vitoksmile.reminder.domain.models.Note
 import kotlinx.android.synthetic.main.item_note.view.*
 
-class NotesAdapter : RecyclerView.Adapter<NotesAdapter.ViewHolder>() {
+class NotesAdapter(
+    private val clickListener: (note: Note) -> Unit
+) : RecyclerView.Adapter<NotesAdapter.ViewHolder>() {
 
     var notes: List<Note> = emptyList()
         set(value) {
@@ -33,6 +35,14 @@ class NotesAdapter : RecyclerView.Adapter<NotesAdapter.ViewHolder>() {
         private val tvTitle = view.tvTitle
         private val tvBody = view.tvBody
         private val tvDate = view.tvDate
+
+        init {
+            view.setOnClickListener {
+                val position = adapterPosition
+                if (position == RecyclerView.NO_POSITION) return@setOnClickListener
+                clickListener(notes[position])
+            }
+        }
 
         fun bind(note: Note) = with(note) {
             tvTitle.text = title

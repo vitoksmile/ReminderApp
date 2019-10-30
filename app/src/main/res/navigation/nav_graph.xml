@@ -9,6 +9,16 @@
         android:id="@+id/notesFragment"
         android:name="com.vitoksmile.reminder.notes.NotesFragment"
         android:label="NotesFragment"
-        tools:layout="@layout/fragment_notes" />
+        tools:layout="@layout/fragment_notes">
+        <action
+            android:id="@+id/action_addNote"
+            app:destination="@id/noteManageFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/noteManageFragment"
+        android:name="com.vitoksmile.reminder.note.NoteManageFragment"
+        android:label="NoteManageFragment"
+        tools:layout="@layout/fragment_note_manage" />
 
 </navigation>

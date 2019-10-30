@@ -1,19 +1,19 @@
-package com.vitoksmile.reminder.notes
+package com.vitoksmile.reminder.note
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.vitoksmile.reminder.R
 import com.vitoksmile.reminder.data.db.AppDatabase
 import com.vitoksmile.reminder.data.repository.NotesRepositoryImpl
-import com.vitoksmile.reminder.domain.models.Note
 import com.vitoksmile.reminder.domain.usecases.NotesUseCaseImpl
-import kotlinx.android.synthetic.main.fragment_notes.*
+import com.vitoksmile.reminder.extensions.inputtedText
+import com.vitoksmile.reminder.extensions.observe
+import kotlinx.android.synthetic.main.fragment_note_manage.*
 
-class NotesFragment : Fragment(R.layout.fragment_notes) {
+class NoteManageFragment : Fragment(R.layout.fragment_note_manage) {
 
     private val viewModel by lazy {
         // TODO: use DI
@@ -21,34 +21,30 @@ class NotesFragment : Fragment(R.layout.fragment_notes) {
         val dao = db.getNotesDao()
         val repo = NotesRepositoryImpl(dao)
         val useCase = NotesUseCaseImpl(repo)
-        NotesViewModel(useCase)
+        NoteManageViewModel(useCase)
     }
-
-    private val adapter by lazy { NotesAdapter(::onNoteClicked) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView.adapter = adapter
-        btnAdd.setOnClickListener { addNote() }
+        toolbar.setNavigationOnClickListener { back() }
+        btnAdd.setOnClickListener { add() }
 
         subscribeToViewModel()
     }
 
     private fun subscribeToViewModel() {
-        viewModel.notes.observe(viewLifecycleOwner, Observer {
-            adapter.notes = it
-            updateEmptyState()
-        })
+        observe(viewModel.noteAddedAction) { back() }
     }
 
-    private fun updateEmptyState() {
-        tvEmptyState.isVisible = adapter.itemCount == 0
+    private fun back() {
+        findNavController().popBackStack()
     }
 
-    private fun addNote() {
-        findNavController().navigate(NotesFragmentDirections.actionAddNote())
+    private fun add() {
+        viewModel.add(
+            title = editTitle.inputtedText,
+            body = editBody.inputtedText
+        )
     }
-
-    private fun onNoteClicked(note: Note) {}
 }
