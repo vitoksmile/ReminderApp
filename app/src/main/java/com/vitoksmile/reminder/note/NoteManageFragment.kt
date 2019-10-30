@@ -9,6 +9,7 @@ import com.vitoksmile.reminder.R
 import com.vitoksmile.reminder.data.db.AppDatabase
 import com.vitoksmile.reminder.data.repository.NotesRepositoryImpl
 import com.vitoksmile.reminder.domain.usecases.NotesUseCaseImpl
+import com.vitoksmile.reminder.extensions.bindError
 import com.vitoksmile.reminder.extensions.inputtedText
 import com.vitoksmile.reminder.extensions.observe
 import kotlinx.android.synthetic.main.fragment_note_manage.*
@@ -40,10 +41,18 @@ class NoteManageFragment : Fragment(R.layout.fragment_note_manage) {
 
     private fun subscribeToViewModel() {
         viewModel.init(args.action)
+
         observe(viewModel.noteData) {
             editTitle.inputtedText = title
             editBody.inputtedText = body
         }
+        observe(viewModel.validationData) {
+            when (this) {
+                is NoteValidator.Status.Title -> inputTitle.bindError(errorResId)
+                is NoteValidator.Status.Body -> inputBody.bindError(errorResId)
+            }
+        }
+
         observe(viewModel.noteAddedAction) { back() }
     }
 

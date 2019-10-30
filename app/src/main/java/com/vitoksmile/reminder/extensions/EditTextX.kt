@@ -4,6 +4,6 @@ import android.widget.EditText
 
 var EditText.inputtedText: String
     set(value) {
-        setText(value)
+        setText(value.trim())
     }
     get() = text?.toString() ?: ""

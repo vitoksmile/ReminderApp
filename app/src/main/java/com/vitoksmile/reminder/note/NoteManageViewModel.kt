@@ -18,6 +18,10 @@ class NoteManageViewModel(
     private val _noteAddedAction = MutableLiveData<Unit>()
     val noteAddedAction: LiveData<Unit> = _noteAddedAction
 
+    private val _validationData = MutableLiveData<NoteValidator.Status>()
+    private val validator = NoteValidator(_validationData)
+    val validationData: LiveData<NoteValidator.Status> = _validationData
+
     private var isInEditMode = false
     private var noteId: Long = -1
 
@@ -35,6 +39,8 @@ class NoteManageViewModel(
     }
 
     fun manage(title: String, body: String) {
+        if (!validator.isValid(title, body)) return
+
         viewModelScope.launch {
             if (isInEditMode) {
                 useCase.update(noteId, title, body)
