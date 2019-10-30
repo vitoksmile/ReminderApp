@@ -7,14 +7,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.vitoksmile.reminder.R
 import com.vitoksmile.reminder.dialogs.ConfirmDialog
-import com.vitoksmile.reminder.data.db.AppDatabase
-import com.vitoksmile.reminder.data.repository.NotesRepositoryImpl
-import com.vitoksmile.reminder.domain.usecases.NotesUseCaseImpl
 import com.vitoksmile.reminder.extensions.bindError
 import com.vitoksmile.reminder.extensions.inputtedText
 import com.vitoksmile.reminder.extensions.observe
 import kotlinx.android.synthetic.main.fragment_note_manage.*
 import kotlinx.android.synthetic.main.fragment_note_manage.toolbar
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NoteManageFragment : Fragment(R.layout.fragment_note_manage),
     ConfirmDialog.OnConfirmListener {
@@ -23,14 +21,7 @@ class NoteManageFragment : Fragment(R.layout.fragment_note_manage),
         const val ACTION_DELETE = "ACTION_DELETE"
     }
 
-    private val viewModel by lazy {
-        // TODO: use DI
-        val db = AppDatabase.getInstance(requireContext().applicationContext)
-        val dao = db.getNotesDao()
-        val repo = NotesRepositoryImpl(dao)
-        val useCase = NotesUseCaseImpl(repo)
-        NoteManageViewModel(useCase)
-    }
+    private val viewModel: NoteManageViewModel by viewModel()
 
     private val args: NoteManageFragmentArgs by navArgs()
     private inline val isInEditMode get() = args.action is Action.UpdateNote
