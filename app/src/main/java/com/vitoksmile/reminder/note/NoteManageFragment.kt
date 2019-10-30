@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.vitoksmile.reminder.R
+import com.vitoksmile.reminder.dialogs.ConfirmDialog
 import com.vitoksmile.reminder.data.db.AppDatabase
 import com.vitoksmile.reminder.data.repository.NotesRepositoryImpl
 import com.vitoksmile.reminder.domain.usecases.NotesUseCaseImpl
@@ -15,7 +16,12 @@ import com.vitoksmile.reminder.extensions.observe
 import kotlinx.android.synthetic.main.fragment_note_manage.*
 import kotlinx.android.synthetic.main.fragment_note_manage.toolbar
 
-class NoteManageFragment : Fragment(R.layout.fragment_note_manage) {
+class NoteManageFragment : Fragment(R.layout.fragment_note_manage),
+    ConfirmDialog.OnConfirmListener {
+
+    private companion object {
+        const val ACTION_DELETE = "ACTION_DELETE"
+    }
 
     private val viewModel by lazy {
         // TODO: use DI
@@ -52,8 +58,7 @@ class NoteManageFragment : Fragment(R.layout.fragment_note_manage) {
                 is NoteValidator.Status.Body -> inputBody.bindError(errorResId)
             }
         }
-
-        observe(viewModel.noteAddedAction) { back() }
+        observe(viewModel.backAction) { back() }
     }
 
     private fun updateState() {
@@ -62,6 +67,14 @@ class NoteManageFragment : Fragment(R.layout.fragment_note_manage) {
 
         val button = if (isInEditMode) R.string.update_note else R.string.add_note
         btnManage.setText(button)
+
+        if (isInEditMode) {
+            toolbar.inflateMenu(R.menu.note_manage)
+            toolbar.setOnMenuItemClickListener {
+                if (it.itemId == R.id.action_delete) deleteConfirm()
+                true
+            }
+        }
     }
 
     private fun back() {
@@ -73,5 +86,19 @@ class NoteManageFragment : Fragment(R.layout.fragment_note_manage) {
             title = editTitle.inputtedText,
             body = editBody.inputtedText
         )
+    }
+
+    private fun deleteConfirm() {
+        ConfirmDialog.show(
+            this,
+            title = R.string.delete_note_confirm_title,
+            message = R.string.delete_note_confirm_message,
+            button = R.string.delete,
+            action = ACTION_DELETE
+        )
+    }
+
+    override fun onConfirmed(action: String) {
+        if (action == ACTION_DELETE) viewModel.delete()
     }
 }

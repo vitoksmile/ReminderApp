@@ -13,5 +13,5 @@ interface NotesUseCase {
 
     suspend fun update(id: Long, title: String, body: String)
 
-    suspend fun delete(note: Note)
+    suspend fun delete(id: Long)
 }

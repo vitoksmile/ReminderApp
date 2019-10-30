@@ -8,6 +8,11 @@
     <string name="enter_body">Enter body</string>
     <string name="add_note">Add note</string>
     <string name="update_note">Update note</string>
+    <string name="delete_note">Delete note</string>
+    <string name="delete_note_confirm_title">Delete the note?</string>
+    <string name="delete_note_confirm_message">Do you really want to delete the note?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
 
     <string name="error_body_length">Body length should be at least 1 symbol</string>
 </resources>

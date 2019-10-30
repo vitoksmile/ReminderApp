@@ -32,7 +32,7 @@ class NotesUseCaseImpl(
         repository.update(id, title, body, Date())
     }
 
-    override suspend fun delete(note: Note) = onBG {
-        repository.delete(note.id)
+    override suspend fun delete(id: Long) = onBG {
+        repository.delete(id)
     }
 }

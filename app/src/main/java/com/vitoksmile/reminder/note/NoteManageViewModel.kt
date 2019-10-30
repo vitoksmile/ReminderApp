@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.vitoksmile.reminder.livedata.ActionLiveData
 import com.vitoksmile.reminder.domain.models.Note
 import com.vitoksmile.reminder.domain.usecases.NotesUseCase
 import kotlinx.coroutines.launch
@@ -15,8 +16,7 @@ class NoteManageViewModel(
     private val _noteData = MutableLiveData<Note>()
     val noteData: LiveData<Note> = _noteData
 
-    private val _noteAddedAction = MutableLiveData<Unit>()
-    val noteAddedAction: LiveData<Unit> = _noteAddedAction
+    val backAction = ActionLiveData()
 
     private val _validationData = MutableLiveData<NoteValidator.Status>()
     private val validator = NoteValidator(_validationData)
@@ -47,7 +47,16 @@ class NoteManageViewModel(
             } else {
                 useCase.add(title, body)
             }
-            _noteAddedAction.value = Unit
+            backAction.sendAction()
+        }
+    }
+
+    fun delete() {
+        if (!isInEditMode) return
+
+        viewModelScope.launch {
+            useCase.delete(noteId)
+            backAction.sendAction()
         }
     }
 }
