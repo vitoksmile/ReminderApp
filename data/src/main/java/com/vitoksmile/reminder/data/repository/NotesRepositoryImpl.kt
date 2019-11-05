@@ -17,13 +17,13 @@ class NotesRepositoryImpl(
         return dao.get(id)
     }
 
-    override suspend fun add(title: String, body: String, date: Date) {
-        val entity = NoteEntity(title = title, body = body, date = date)
+    override suspend fun add(title: String, body: String, date: Date?) {
+        val entity = NoteEntity(title = title, body = body, date = date, updatedAt = Date())
         dao.insertOrUpdate(entity)
     }
 
-    override suspend fun update(id: Long, title: String, body: String, date: Date) {
-        val entity = dao.get(id).copy(title = title, body = body, date = date)
+    override suspend fun update(id: Long, title: String, body: String, date: Date?) {
+        val entity = dao.get(id).copy(title = title, body = body, date = date, updatedAt = Date())
         dao.insertOrUpdate(entity)
     }
 

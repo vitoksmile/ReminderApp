@@ -24,12 +24,12 @@ class NotesUseCaseImpl(
         NoteMapper.toDomain(repository.getNote(id))
     }
 
-    override suspend fun add(title: String, body: String) = onBG {
-        repository.add(title, body, Date())
+    override suspend fun add(title: String, body: String, date: Date?) = onBG {
+        repository.add(title, body, date)
     }
 
-    override suspend fun update(id: Long, title: String, body: String) = onBG {
-        repository.update(id, title, body, Date())
+    override suspend fun update(id: Long, title: String, body: String, date: Date?) = onBG {
+        repository.update(id, title, body, date)
     }
 
     override suspend fun delete(id: Long) = onBG {

@@ -8,6 +8,7 @@ import com.vitoksmile.reminder.livedata.ActionLiveData
 import com.vitoksmile.reminder.domain.models.Note
 import com.vitoksmile.reminder.domain.usecases.NotesUseCase
 import kotlinx.coroutines.launch
+import java.util.*
 
 class NoteManageViewModel(
     private val useCase: NotesUseCase
@@ -15,6 +16,15 @@ class NoteManageViewModel(
 
     private val _noteData = MutableLiveData<Note>()
     val noteData: LiveData<Note> = _noteData
+
+    private val _dateData = MutableLiveData<Date?>()
+    val dateData: LiveData<Date?> = _dateData
+    var currentDate: Date? = null
+        private set(value) {
+            field = value
+            _dateData.value = value
+        }
+        get() = _dateData.value
 
     val backAction = ActionLiveData()
 
@@ -33,9 +43,21 @@ class NoteManageViewModel(
             noteId = action.noteId
 
             viewModelScope.launch {
-                _noteData.value = useCase.getNote(noteId)
+                val note = useCase.getNote(noteId)
+                _noteData.value = note
+                _dateData.value = note.date
             }
+        } else {
+            _dateData.value = null
         }
+    }
+
+    fun onDatePicked(date: Date) {
+        currentDate = date
+    }
+
+    fun clearDate() {
+        currentDate = null
     }
 
     fun manage(title: String, body: String) {
@@ -43,9 +65,9 @@ class NoteManageViewModel(
 
         viewModelScope.launch {
             if (isInEditMode) {
-                useCase.update(noteId, title, body)
+                useCase.update(noteId, title, body, currentDate)
             } else {
-                useCase.add(title, body)
+                useCase.add(title, body, currentDate)
             }
             backAction.sendAction()
         }

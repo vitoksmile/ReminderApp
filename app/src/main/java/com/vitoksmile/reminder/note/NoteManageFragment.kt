@@ -2,17 +2,19 @@ package com.vitoksmile.reminder.note
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.vitoksmile.reminder.R
 import com.vitoksmile.reminder.dialogs.ConfirmDialog
-import com.vitoksmile.reminder.extensions.bindError
-import com.vitoksmile.reminder.extensions.inputtedText
-import com.vitoksmile.reminder.extensions.observe
+import com.vitoksmile.reminder.dialogs.pickDateTime
+import com.vitoksmile.reminder.extensions.*
+import com.vitoksmile.reminder.utils.formatNoteDate
 import kotlinx.android.synthetic.main.fragment_note_manage.*
 import kotlinx.android.synthetic.main.fragment_note_manage.toolbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
 
 class NoteManageFragment : Fragment(R.layout.fragment_note_manage),
     ConfirmDialog.OnConfirmListener {
@@ -26,11 +28,15 @@ class NoteManageFragment : Fragment(R.layout.fragment_note_manage),
     private val args: NoteManageFragmentArgs by navArgs()
     private inline val isInEditMode get() = args.action is Action.UpdateNote
 
+    private var datePicker: DialogFragment? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         updateState()
         toolbar.setNavigationOnClickListener { back() }
+        tvDate.setOnClickListener { pickDate() }
+        tvDate.onDrawableEndClicked { viewModel.clearDate() }
         btnManage.setOnClickListener { manage() }
 
         subscribeToViewModel()
@@ -43,6 +49,10 @@ class NoteManageFragment : Fragment(R.layout.fragment_note_manage),
             editTitle.inputtedText = title
             editBody.inputtedText = body
         }
+        observe(viewModel.dateData) {
+            updateDate(this)
+        }
+
         observe(viewModel.validationData) {
             when (this) {
                 is NoteValidator.Status.Title -> inputTitle.bindError(errorResId)
@@ -68,6 +78,16 @@ class NoteManageFragment : Fragment(R.layout.fragment_note_manage),
         }
     }
 
+    private fun updateDate(date: Date?) {
+        if (date != null) {
+            tvDate.text = getString(R.string.note_remind_date_regexp, date.formatNoteDate())
+            tvDate.setDrawableEnd(R.drawable.ic_date_clear)
+        } else {
+            tvDate.setText(R.string.note_remind_disabled)
+            tvDate.clearDrawableEnd()
+        }
+    }
+
     private fun back() {
         findNavController().popBackStack()
     }
@@ -77,6 +97,12 @@ class NoteManageFragment : Fragment(R.layout.fragment_note_manage),
             title = editTitle.inputtedText,
             body = editBody.inputtedText
         )
+    }
+
+    private fun pickDate() {
+        pickDateTime(selectedDate = viewModel.currentDate) {
+            viewModel.onDatePicked(it)
+        }
     }
 
     private fun deleteConfirm() {
@@ -91,5 +117,10 @@ class NoteManageFragment : Fragment(R.layout.fragment_note_manage),
 
     override fun onConfirmed(action: String) {
         if (action == ACTION_DELETE) viewModel.delete()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        datePicker?.dismissAllowingStateLoss()
     }
 }

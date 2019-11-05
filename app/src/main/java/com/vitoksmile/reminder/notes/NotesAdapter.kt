@@ -3,9 +3,11 @@ package com.vitoksmile.reminder.notes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.vitoksmile.reminder.R
 import com.vitoksmile.reminder.domain.models.Note
+import com.vitoksmile.reminder.utils.formatNoteDate
 import kotlinx.android.synthetic.main.item_note.view.*
 
 class NotesAdapter(
@@ -45,9 +47,11 @@ class NotesAdapter(
         }
 
         fun bind(note: Note) = with(note) {
+            tvTitle.isVisible = title.isNotEmpty()
             tvTitle.text = title
             tvBody.text = body
-            tvDate.text = date.toString() // TODO: add formatter
+            tvDate.isVisible = date != null
+            tvDate.text = date?.formatNoteDate()
         }
     }
 }

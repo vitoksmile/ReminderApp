@@ -6,8 +6,8 @@ import java.util.*
 class DateConverter {
 
     @TypeConverter
-    fun toDB(date: Date) = date.time
+    fun toDB(date: Date?) = date?.time
 
     @TypeConverter
-    fun toEntity(time: Long) = Date(time)
+    fun toEntity(time: Long?) = time?.let(::Date)
 }
