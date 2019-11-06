@@ -1,10 +1,13 @@
 buildscript {
+    ext.kotlin_version = '1.3.50'
+
     ext {
         kotlin_version = '1.3.50'
         kotlin_coroutines_version = '1.3.2'
         nav_version = '2.1.0'
         lifecycle_version = "2.1.0"
         koin_version = '2.0.1'
+        work_manager_version = '2.3.0-alpha03'
     }
     repositories {
         google()

@@ -33,10 +33,11 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version"
 
-    implementation project(':data')
+    implementation project(':domain')
     implementation project(':scheduler')
 
-    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
+    // Koin for Android
+    implementation "org.koin:koin-android:$koin_version"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

@@ -3,6 +3,7 @@ package com.vitoksmile.reminder
 import android.app.Application
 import com.vitoksmile.reminder.di.initDI
 import com.vitoksmile.reminder.di.viewModelModule
+import com.vitoksmile.reminder.scheduler.Scheduler
 
 class ReminderApplication : Application() {
 
@@ -18,5 +19,6 @@ class ReminderApplication : Application() {
         super.onCreate()
         appContext = this
         initDI(viewModelModule)
+        Scheduler.init(this)
     }
 }

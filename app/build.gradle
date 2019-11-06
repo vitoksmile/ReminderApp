@@ -40,6 +40,8 @@ dependencies {
 
     implementation project(':domain')
     implementation project(':di')
+    implementation project(':scheduler')
+    implementation project(':notifications')
     // Koin AndroidX ViewModel features
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
 

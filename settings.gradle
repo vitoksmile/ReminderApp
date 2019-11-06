@@ -1,2 +1,2 @@
-include ':app', ':data', ':domain', ':di'
+include ':app', ':data', ':domain', ':di', ':scheduler', ':notifications'
 rootProject.name='ReminderApp'

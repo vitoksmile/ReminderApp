@@ -10,7 +10,7 @@ interface NotesRepository {
 
     suspend fun getNote(id: Long): NoteEntity
 
-    suspend fun add(title: String, body: String, date: Date?)
+    suspend fun add(title: String, body: String, date: Date?): Long
 
     suspend fun update(id: Long, title: String, body: String, date: Date?)
 

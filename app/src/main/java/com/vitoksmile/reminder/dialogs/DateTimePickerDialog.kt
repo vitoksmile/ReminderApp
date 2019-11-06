@@ -25,7 +25,8 @@ class DateTimePickerDialog(
         calendar.apply {
             set(Calendar.HOUR_OF_DAY, hour)
             set(Calendar.MINUTE, minute)
-            set(Calendar.SECOND, second)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
         }
         onPicked()
     }

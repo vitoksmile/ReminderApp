@@ -15,8 +15,10 @@ interface NotesDao {
     suspend fun get(id: Long): NoteEntity
 
     @Transaction
-    suspend fun insertOrUpdate(note: NoteEntity) {
-        if (_insert(note) == -1L) _update(note)
+    suspend fun insertOrUpdate(note: NoteEntity): Long {
+        val insertId = _insert(note)
+        if (insertId == -1L) return _update(note).toLong()
+        return insertId
     }
 
     @Query("DELETE FROM notes WHERE id=:id")
@@ -26,5 +28,5 @@ interface NotesDao {
     suspend fun _insert(note: NoteEntity): Long
 
     @Update
-    suspend fun _update(note: NoteEntity)
+    suspend fun _update(note: NoteEntity): Int
 }
