@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">notifications</string>
+
+    <string name="notification_title_default">Reminder</string>
+    <string name="notification_channel_id">ReminderChannelId</string>
+    <string name="notification_channel_name">Reminder</string>
 </resources>

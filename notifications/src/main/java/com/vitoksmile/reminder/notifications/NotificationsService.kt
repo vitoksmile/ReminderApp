@@ -17,6 +17,7 @@ class NotificationsService : Service(), CoroutineScope {
         get() = Dispatchers.Main + job + CoroutineExceptionHandler { _, throwable -> throwable.printStackTrace() }
 
     private val notesUseCase: NotesUseCase by inject()
+    private val notifications by notificationManager()
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -38,6 +39,10 @@ class NotificationsService : Service(), CoroutineScope {
     }
 
     private fun showNotification(note: Note) {
-        // TODO: not implemented
+        val title = if (note.title.isEmpty())
+            getString(R.string.notification_title_default) else
+            note.title
+        val body = note.body
+        notifications.show(note.id.hashCode(), title, body)
     }
 }

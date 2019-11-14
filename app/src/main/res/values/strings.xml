@@ -16,6 +16,6 @@
     <string name="error_body_length">Body length should be at least 1 symbol</string>
     <string name="note_remind_date_regexp">Remind at %s</string>
     <string name="note_remind_disabled">Not remind</string>
-    <string name="note_date_pattern">dd MMM yyy, hh:mm</string>
+    <string name="note_date_pattern">dd MMM yyy, HH:mm</string>
     <string name="note_remind_date_pick_title">Pick date to remind the node</string>
 </resources>
